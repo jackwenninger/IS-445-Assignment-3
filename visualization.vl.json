@@ -1,0 +1,47 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://raw.githubusercontent.com/jackwenninger/Data-for-IS445/main/building_inventory.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [{"filter": {"field": "Year Acquired", "gt": 1867}}],
+  "hconcat": [
+    {
+      "params": [{"name": "myfirstparam", "select": "interval"}],
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "Year Acquired",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {"aggregate": "mean", "field": "Square Footage"},
+        "color": {
+          "field": "Bldg Status",
+          "type": "nominal",
+          "title": "Building Status"
+        }
+      }
+    },
+    {
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "Year Acquired",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {"field": "Square Footage", "type": "quantitative"},
+        "color": {
+          "condition": {
+            "param": "myfirstparam",
+            "field": "Bldg Status",
+            "type": "nominal"
+          },
+          "value": "gray"
+        }
+      }
+    }
+  ],
+  "config": {}
+}
